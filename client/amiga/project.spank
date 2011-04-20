@@ -1,0 +1,18 @@
+target		serialnet
+
+sourcedir	src
+compiler	dcc
+cflags		Iinclude
+rccheck		date
+
+# compile and link against a kickboot 2.0 rom
+ldflags		2.0
+cflags		2.0
+
+# package in an adf file
+postbuildscript "echo Packaging floppy image..."
+postbuildscript "echo $(target) > boot/root/s/startup-sequence"
+postbuildscript	"makeadf -l $(target) -b boot/bootblock13.bbk -r floppy.adf boot/root/* $(target)"
+
+# remove the floppy image on clean
+oncleanscript	"rm -f floppy.adf"
